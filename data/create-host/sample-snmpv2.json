@@ -1,0 +1,80 @@
+{
+    "host": "sample-snmpv2",
+    "name": "",
+    "status": "enable",
+    "proxy": "",
+    "description": "sample\\r\\nsnmpv2",
+    "templates": [
+        "ICMP Ping",
+        "Generic SNMP"
+    ],
+    "groups": [
+        "Discovered hosts"
+    ],
+    "interfaces": [
+        {
+            "type": "snmp",
+            "main": "default",
+            "useip": "ip",
+            "ip": "127.0.0.1",
+            "dns": "",
+            "port": "161",
+            "details": {
+                "version": "2",
+                "bulk": "on",
+                "community": "{$SNMP_COMMUNITY}",
+                "contextname": "",
+                "securityname": "",
+                "securitylevel": "",
+                "authprotocol": "",
+                "authpassphrase": "",
+                "privprotocol": "",
+                "privpassphrase": ""
+            }
+        }
+    ],
+    "tags": [
+        {
+            "tag": "Sample",
+            "value": "snmpv2"
+        }
+    ],
+    "macros": [
+        {
+            "macro": "{$HOSTNAME}",
+            "value": "hostname",
+            "type": "text"
+        },
+        {
+            "macro": "{$IPADDR}",
+            "value": "127.0.0.1",
+            "type": "text"
+        },
+        {
+            "macro": "{$SNMP_COMMUNITY}",
+            "value": "snmpv2-public",
+            "type": "secret"
+        }
+    ],
+    "inventory": {
+        "mode": "manual",
+        "inventory": [
+            {
+                "type": "os",
+                "value": "snmp"
+            },
+            {
+                "type": "alias",
+                "value": "sample"
+            }
+        ]
+    },
+    "encryption": {
+	"tls_connect": "no",
+	"tls_accept": "no",
+	"tls_issuer": "",
+	"tls_subject": "",
+	"tls_psk_identity": "",
+	"tls_psk": ""
+    }
+}

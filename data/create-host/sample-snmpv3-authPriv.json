@@ -1,0 +1,76 @@
+{
+    "host": "sample-snmpv3-authPriv",
+    "name": "",
+    "status": "enable",
+    "proxy": "",
+    "description": "sample\\r\\nsnmpv3-authPriv",
+    "templates": [
+        "ICMP Ping",
+        "Generic SNMP"
+    ],
+    "groups": [
+        "Discovered hosts"
+    ],
+    "interfaces": [
+        {
+            "type": "snmp",
+            "main": "default",
+            "useip": "ip",
+            "ip": "127.0.0.1",
+            "dns": "",
+            "port": "161",
+            "details": {
+                "version": "3",
+                "bulk": "on",
+                "community": "",
+                "contextname": "{$CONTEXTNAME}",
+                "securityname": "{$SECURITYNAME}",
+                "securitylevel": "authPriv",
+                "authprotocol": "MD5",
+                "authpassphrase": "{$AUTHPASS}",
+                "privprotocol": "DES",
+                "privpassphrase": "{$PRIVPASS}"
+            }
+        }
+    ],
+    "tags": [
+        {
+            "tag": "Sample",
+            "value": "snmpv3"
+        }
+    ],
+    "macros": [
+        {
+            "macro": "{$CONTEXTNAME}",
+            "value": "contextname",
+            "type": "text"
+        },
+        {
+            "macro": "{$SECURITYNAME}",
+            "value": "securityname",
+            "type": "text"
+        },
+        {
+            "macro": "{$AUTHPASS}",
+            "value": "authpass",
+            "type": "secret"
+        },
+        {
+            "macro": "{$PRIVPASS}",
+            "value": "privpass",
+            "type": "secret"
+        }
+    ],
+    "inventory": {
+        "mode": "auto",
+        "inventory": []
+    },
+    "encryption": {
+	"tls_connect": "no",
+	"tls_accept": "no",
+	"tls_issuer": "",
+	"tls_subject": "",
+	"tls_psk_identity": "",
+	"tls_psk": ""
+    }
+}

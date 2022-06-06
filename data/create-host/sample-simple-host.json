@@ -1,0 +1,26 @@
+{
+    "host": "sample-simple-host",
+    "name": "",
+    "status": "disable",
+    "proxy": "",
+    "description": "",
+    "templates": [],
+    "groups": [
+        "Discovered hosts"
+    ],
+    "interfaces": [],
+    "tags": [],
+    "macros": [],
+    "inventory": {
+        "mode": "disable",
+        "inventory": []
+    },
+    "encryption": {
+	"tls_connect": "no",
+	"tls_accept": "no",
+	"tls_issuer": "",
+	"tls_subject": "",
+	"tls_psk_identity": "",
+	"tls_psk": ""
+    }
+}

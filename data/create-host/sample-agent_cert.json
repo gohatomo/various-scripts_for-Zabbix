@@ -1,0 +1,80 @@
+{
+    "host": "sample-agent-cert",
+    "name": "",
+    "status": "enable",
+    "proxy": "",
+    "description": "sample\\r\\nagent-cert",
+    "templates": [
+        "ICMP Ping",
+        "Zabbix agent"
+    ],
+    "groups": [
+        "Linux servers",
+        "Discovered hosts"
+    ],
+    "interfaces": [
+        {
+            "type": "agent",
+            "main": "default",
+            "useip": "ip",
+            "ip": "127.0.0.1",
+            "dns": "",
+            "port": "10050",
+            "details": {
+                "version": "",
+                "bulk": "",
+                "community": "",
+                "contextname": "",
+                "securityname": "",
+                "securitylevel": "",
+                "authprotocol": "",
+                "authpassphrase": "",
+                "privprotocol": "",
+                "privpassphrase": ""
+            }
+        }
+    ],
+    "tags": [
+        {
+            "tag": "Sample",
+            "value": "agent"
+        },
+        {
+            "tag": "Encription",
+            "value": "cert"
+        }
+    ],
+    "macros": [
+        {
+            "macro": "{$HOSTNAME}",
+            "value": "hostname",
+            "type": "text"
+        },
+        {
+            "macro": "{$IPADDR}",
+            "value": "127.0.0.1",
+            "type": "text"
+        }
+    ],
+    "inventory": {
+        "mode": "manual",
+        "inventory": [
+            {
+                "type": "os",
+                "value": "linux"
+            },
+            {
+                "type": "alias",
+                "value": "sample"
+            }
+        ]
+    },
+    "encryption": {
+	"tls_connect": "certificate",
+	"tls_accept": "certificate",
+	"tls_issuer": "cert issuer",
+	"tls_subject": "cert subject",
+	"tls_psk_identity": "",
+	"tls_psk": ""
+    }
+}

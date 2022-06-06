@@ -1,0 +1,80 @@
+{
+    "host": "sample-agent-noenc",
+    "name": "",
+    "status": "enable",
+    "proxy": "",
+    "description": "sample\\r\\nagent",
+    "templates": [
+        "ICMP Ping",
+        "Zabbix agent"
+    ],
+    "groups": [
+        "Linux servers",
+        "Discovered hosts"
+    ],
+    "interfaces": [
+        {
+            "type": "agent",
+            "main": "default",
+            "useip": "ip",
+            "ip": "127.0.0.1",
+            "dns": "",
+            "port": "10050",
+            "details": {
+                "version": "",
+                "bulk": "",
+                "community": "",
+                "contextname": "",
+                "securityname": "",
+                "securitylevel": "",
+                "authprotocol": "",
+                "authpassphrase": "",
+                "privprotocol": "",
+                "privpassphrase": ""
+            }
+        }
+    ],
+    "tags": [
+        {
+            "tag": "Sample",
+            "value": "agent"
+        },
+        {
+            "tag": "Encription",
+            "value": "no"
+        }
+    ],
+    "macros": [
+        {
+            "macro": "{$HOSTNAME}",
+            "value": "hostname",
+            "type": "text"
+        },
+        {
+            "macro": "{$IPADDR}",
+            "value": "127.0.0.1",
+            "type": "text"
+        }
+    ],
+    "inventory": {
+        "mode": "manual",
+        "inventory": [
+            {
+                "type": "os",
+                "value": "linux"
+            },
+            {
+                "type": "alias",
+                "value": "sample"
+            }
+        ]
+    },
+    "encryption": {
+	"tls_connect": "no",
+	"tls_accept": "no",
+	"tls_issuer": "",
+	"tls_subject": "",
+	"tls_psk_identity": "",
+	"tls_psk": ""
+    }
+}

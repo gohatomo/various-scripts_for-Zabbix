@@ -1,0 +1,75 @@
+{
+    "host": "sample-multi-if",
+    "name": "",
+    "status": "enable",
+    "proxy": "",
+    "description": "",
+    "templates": [
+        "ICMP Ping"
+    ],
+    "groups": [
+        "Discovered hosts"
+    ],
+    "interfaces": [
+        {
+            "type": "agent",
+            "main": "default",
+            "useip": "ip",
+            "ip": "127.0.0.1",
+            "dns": "",
+            "port": "10050",
+            "details": {
+                "version": "",
+                "bulk": "",
+                "community": "",
+                "contextname": "",
+                "securityname": "",
+                "securitylevel": "",
+                "authprotocol": "",
+                "authpassphrase": "",
+                "privprotocol": "",
+                "privpassphrase": ""
+            }
+        },
+        {
+            "type": "snmp",
+            "main": "default",
+            "useip": "ip",
+            "ip": "127.0.0.1",
+            "dns": "",
+            "port": "161",
+            "details": {
+                "version": "2",
+                "bulk": "on",
+                "community": "{$SNMP_COMMUNITY}",
+                "contextname": "",
+                "securityname": "",
+                "securitylevel": "",
+                "authprotocol": "",
+                "authpassphrase": "",
+                "privprotocol": "",
+                "privpassphrase": ""
+            }
+        }
+    ],
+    "tags": [],
+    "macros": [
+        {
+            "macro": "{$SNMP_COMMUNITY}",
+            "value": "snmpv2-public",
+            "type": "secret"
+        }
+    ],
+    "inventory": {
+        "mode": "auto",
+        "inventory": []
+    },
+    "encryption": {
+	"tls_connect": "no",
+	"tls_accept": "no",
+	"tls_issuer": "",
+	"tls_subject": "",
+	"tls_psk_identity": "",
+	"tls_psk": ""
+    }
+}
