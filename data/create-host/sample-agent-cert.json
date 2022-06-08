@@ -3,10 +3,10 @@
     "name": "",
     "status": "enable",
     "proxy": "",
-    "description": "sample\\r\\nagent-cert",
+    "description": "sample\r\nagent-cert",
     "templates": [
-        "ICMP Ping",
-        "Zabbix agent"
+        "Zabbix agent",
+        "ICMP Ping"
     ],
     "groups": [
         "Linux servers",
@@ -60,21 +60,27 @@
         "mode": "manual",
         "inventory": [
             {
-                "type": "os",
-                "value": "linux"
-            },
-            {
                 "type": "alias",
                 "value": "sample"
+            },
+            {
+                "type": "os",
+                "value": "linux"
             }
         ]
     },
     "encryption": {
-	"tls_connect": "certificate",
-	"tls_accept": "certificate",
-	"tls_issuer": "cert issuer",
-	"tls_subject": "cert subject",
-	"tls_psk_identity": "",
-	"tls_psk": ""
+        "tls_connect": "certificate",
+        "tls_accept": "certificate",
+        "tls_issuer": "cert issuer",
+        "tls_subject": "cert subject",
+        "tls_psk_identity": "",
+        "tls_psk": ""
+    },
+    "ipmi": {
+        "authtype": "default",
+        "privilege": "user",
+        "username": "",
+        "password": ""
     }
 }

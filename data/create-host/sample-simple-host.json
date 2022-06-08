@@ -3,7 +3,7 @@
     "name": "",
     "status": "disable",
     "proxy": "",
-    "description": "",
+    "description": "test\ntest2",
     "templates": [],
     "groups": [
         "Discovered hosts"
@@ -16,11 +16,17 @@
         "inventory": []
     },
     "encryption": {
-	"tls_connect": "no",
-	"tls_accept": "no",
-	"tls_issuer": "",
-	"tls_subject": "",
-	"tls_psk_identity": "",
-	"tls_psk": ""
+        "tls_connect": "no",
+        "tls_accept": "no",
+        "tls_issuer": "",
+        "tls_subject": "",
+        "tls_psk_identity": "",
+        "tls_psk": ""
+    },
+    "ipmi": {
+        "authtype": "default",
+        "privilege": "user",
+        "username": "",
+        "password": ""
     }
 }

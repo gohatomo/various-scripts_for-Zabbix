@@ -56,7 +56,7 @@
     "macros": [
         {
             "macro": "{$SNMP_COMMUNITY}",
-            "value": "snmpv2-public",
+            "value": "********",
             "type": "secret"
         }
     ],
@@ -65,11 +65,17 @@
         "inventory": []
     },
     "encryption": {
-	"tls_connect": "no",
-	"tls_accept": "no",
-	"tls_issuer": "",
-	"tls_subject": "",
-	"tls_psk_identity": "",
-	"tls_psk": ""
+        "tls_connect": "no",
+        "tls_accept": "no",
+        "tls_issuer": "",
+        "tls_subject": "",
+        "tls_psk_identity": "",
+        "tls_psk": ""
+    },
+    "ipmi": {
+        "authtype": "default",
+        "privilege": "user",
+        "username": "",
+        "password": ""
     }
 }

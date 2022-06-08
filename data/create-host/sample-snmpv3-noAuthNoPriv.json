@@ -3,7 +3,7 @@
     "name": "",
     "status": "enable",
     "proxy": "",
-    "description": "sample\\r\\nsnmpv3-noAuthNoPriv",
+    "description": "sample\r\nsnmpv3-noAuthNoPriv",
     "templates": [
         "ICMP Ping",
         "Generic SNMP"
@@ -26,9 +26,9 @@
                 "contextname": "{$CONTEXTNAME}",
                 "securityname": "{$SECURITYNAME}",
                 "securitylevel": "noAuthNoPriv",
-                "authprotocol": "",
+                "authprotocol": "MD5",
                 "authpassphrase": "",
-                "privprotocol": "",
+                "privprotocol": "DES",
                 "privpassphrase": ""
             }
         }
@@ -56,11 +56,17 @@
         "inventory": []
     },
     "encryption": {
-	"tls_connect": "no",
-	"tls_accept": "no",
-	"tls_issuer": "",
-	"tls_subject": "",
-	"tls_psk_identity": "",
-	"tls_psk": ""
+        "tls_connect": "no",
+        "tls_accept": "no",
+        "tls_issuer": "",
+        "tls_subject": "",
+        "tls_psk_identity": "",
+        "tls_psk": ""
+    },
+    "ipmi": {
+        "authtype": "default",
+        "privilege": "user",
+        "username": "",
+        "password": ""
     }
 }

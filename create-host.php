@@ -10,7 +10,7 @@ date_default_timezone_set("$timezone");
 //Log file settings
 $date = date("Ymd");
 
-$log_file = rtrim($log_dir, '/') . "/create-host-{$date}.log";
+$log_file = rtrim($log_dir, '/') . "/create-host_{$date}.log";
 if (!file_exists($log_dir)) {
 	mkdir($log_dir, 0755);
 }
@@ -704,11 +704,6 @@ for ($i = 0; $i < $count; ++$i) {
 							continue 2;
 						}
 						
-						//Settings for each securitylevel
-						//if ($securitylevel === '0') {
-						//	$authprotocol = '0';
-						//	$privprotocol = '0';
-						//}
 						if ($securitylevel === '1' || $securitylevel === '2') {
 							//authprotocol
 							if (isset($data_array['interfaces'][$j]['details']['authprotocol'])) {
@@ -1117,7 +1112,91 @@ for ($i = 0; $i < $count; ++$i) {
 			}
 		}
 	}
+
+	//ipmi
+	$ipmi_authtype = "-1";
+	$ipmi_password = "";
+	$ipmi_privilege = "2";
+	$ipmi_username = "";
 	
+	if (isset($data_array['ipmi'])) {	
+		if (isset($data_array['ipmi']['authtype'])) {
+			if ($data_array['ipmi']['authtype'] === 'default') {
+				$ipmi_authtype = '-1';
+			}
+			elseif ($data_array['ipmi']['authtype'] === 'none') {
+				$ipmi_authtype = '0';
+			}
+			elseif ($data_array['ipmi']['authtype'] === 'MD2') {
+				$ipmi_authtype = '1';
+			}
+			elseif ($data_array['ipmi']['authtype'] === 'MD5') {
+				$ipmi_authtype = '2';
+			}
+			elseif ($data_array['ipmi']['authtype'] === 'straight') {
+				$ipmi_authtype = '4';
+			}
+			elseif ($data_array['ipmi']['authtype'] === 'OEM') {
+				$ipmi_authtype = '5';
+			}
+			elseif ($data_array['ipmi']['authtype'] === 'RMCP') {
+				$ipmi_authtype = '6';
+			}
+			else {
+				//Error count
+				$error_count = $error_count+1;
+				processing_status_display($i+1, $count, $error_count);
+				
+				//Error message output
+				$error_message = "[ERROR] "
+					. "message:\"" . "ipmi authtype is missmatched." . "\", "
+					. "file:\"" . $file_list[$i] . "\", "
+					. "data:\"" . $data_array['ipmi']['authtype'] . "\"";
+				log_output($log_file, $error_message);
+				
+				//Processing skip
+				continue;
+			}
+		}
+		if (isset($data_array['ipmi']['privilege'])) {
+			if ($data_array['ipmi']['privilege'] === 'callback') {
+				$ipmi_privilege = '1';
+			}
+			elseif ($data_array['ipmi']['privilege'] === 'user') {
+				$ipmi_privilege = '2';
+			}
+			elseif ($data_array['ipmi']['privilege'] === 'operator') {
+				$ipmi_privilege = '3';
+			}
+			elseif ($data_array['ipmi']['privilege'] === 'admin') {
+				$ipmi_privilege = '4';
+			}
+			elseif ($data_array['ipmi']['privilege'] === 'OEM') {
+				$ipmi_privilege = '5';
+			}
+			else {
+				//Error count
+				$error_count = $error_count+1;
+				processing_status_display($i+1, $count, $error_count);
+				
+				//Error message output
+				$error_message = "[ERROR] "
+					. "message:\"" . "ipmi privilege is missmatched." . "\", "
+					. "file:\"" . $file_list[$i] . "\", "
+					. "data:\"" . $data_array['ipmi']['privilege'] . "\"";
+				log_output($log_file, $error_message);
+				
+				//Processing skip
+				continue;
+			}
+		}
+		if (isset($data_array['ipmi']['password'])) {
+			$ipmi_password = $data_array['ipmi']['password'];
+		}
+		if (isset($data_array['ipmi']['username'])) {
+			$ipmi_username = $data_array['ipmi']['username'];
+		} 
+	}
 	//API Request
 	$method = 'host.create';
 	$params = array(
@@ -1137,7 +1216,11 @@ for ($i = 0; $i < $count; ++$i) {
 		'tls_issuer' => $tls_issuer,
 		'tls_subject' => $tls_subject,
 		'tls_psk_identity' => $tls_psk_identity,
-		'tls_psk' => $tls_psk
+		'tls_psk' => $tls_psk,
+		'ipmi_authtype' => $ipmi_authtype,
+		'ipmi_privilege' => $ipmi_privilege,
+		'ipmi_username' => $ipmi_username,
+		'ipmi_password' => $ipmi_password
 	);
 	if (!empty($interfaces)) {
 		$params_interfaces = array(

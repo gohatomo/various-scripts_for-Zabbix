@@ -3,7 +3,7 @@
     "name": "",
     "status": "enable",
     "proxy": "",
-    "description": "sample\\r\\nsnmpv2",
+    "description": "sample\r\nsnmpv2",
     "templates": [
         "ICMP Ping",
         "Generic SNMP"
@@ -52,7 +52,7 @@
         },
         {
             "macro": "{$SNMP_COMMUNITY}",
-            "value": "snmpv2-public",
+            "value": "********",
             "type": "secret"
         }
     ],
@@ -60,21 +60,27 @@
         "mode": "manual",
         "inventory": [
             {
-                "type": "os",
-                "value": "snmp"
-            },
-            {
                 "type": "alias",
                 "value": "sample"
+            },
+            {
+                "type": "os",
+                "value": "snmp"
             }
         ]
     },
     "encryption": {
-	"tls_connect": "no",
-	"tls_accept": "no",
-	"tls_issuer": "",
-	"tls_subject": "",
-	"tls_psk_identity": "",
-	"tls_psk": ""
+        "tls_connect": "no",
+        "tls_accept": "no",
+        "tls_issuer": "",
+        "tls_subject": "",
+        "tls_psk_identity": "",
+        "tls_psk": ""
+    },
+    "ipmi": {
+        "authtype": "default",
+        "privilege": "user",
+        "username": "",
+        "password": ""
     }
 }
