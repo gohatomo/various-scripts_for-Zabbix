@@ -26,6 +26,7 @@ Modify the configuration file (check_related_ac-tr.conf) according to the operat
 * $base_dir: Script expansion directory.
 * $log_dir: Output directory of execute log file.
 * $data_dir: Data directory for data file for registering and executing data.
+* $output_dir: Output directory of export file.
 
 ## Usage
 1. Placement the data file in data directory for scripts.
