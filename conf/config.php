@@ -13,8 +13,9 @@ $encoding = 'UTF-8';
 $timezone = 'Asia/Tokyo';
 
 //Directory
-$base_dir = "./";
+$base_dir = ".";
 $log_dir = "{$base_dir}/log/";
 $data_dir = "{$base_dir}/data/";
+$output_dir = "{$base_dir}/output/";
 
 ?>

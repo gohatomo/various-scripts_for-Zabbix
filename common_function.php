@@ -23,6 +23,26 @@ function log_output ($log_file, $message) {
 	fclose($f);
 }
 
+
+//Remove directory
+function rm_dir($dir){
+	//Add remove file and sub directory
+	$files = array_diff(scandir($dir), array('.', '..'));
+	
+	//Remove file and sub directory
+	foreach ($files as $fname){
+		if (is_dir($dir . '/' . $fname)) {
+			rm_dir($dir . '/' . $fname);
+		}
+		else {
+			unlink($dir . '/' . $fname);
+		}
+	}
+	
+	//Remove top direcrory
+	rmdir($dir);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //	API Function
 ////////////////////////////////////////////////////////////////////////////////
