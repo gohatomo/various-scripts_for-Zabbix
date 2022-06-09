@@ -8,3 +8,8 @@
 * Added script for hostgroup create.
 * Added script for host get.
 * Added IPMI parameter to host create script.
+
+### [rev1.0.2] - 2022-06-09
+* Added script for hostparam create.
+* Added Macro description parameter to host create script.
+* Added script description to header.
