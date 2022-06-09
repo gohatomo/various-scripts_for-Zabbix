@@ -43,12 +43,14 @@
         {
             "macro": "{$CONTEXTNAME}",
             "value": "contextname",
-            "type": "text"
+            "type": "text",
+            "description": ""
         },
         {
             "macro": "{$SECURITYNAME}",
             "value": "securityname",
-            "type": "text"
+            "type": "text",
+            "description": ""
         }
     ],
     "inventory": {

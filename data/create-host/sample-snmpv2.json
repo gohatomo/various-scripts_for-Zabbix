@@ -43,17 +43,20 @@
         {
             "macro": "{$HOSTNAME}",
             "value": "hostname",
-            "type": "text"
+            "type": "text",
+            "description": ""
         },
         {
             "macro": "{$IPADDR}",
             "value": "127.0.0.1",
-            "type": "text"
+            "type": "text",
+            "description": ""
         },
         {
             "macro": "{$SNMP_COMMUNITY}",
             "value": "********",
-            "type": "secret"
+            "type": "secret",
+            "description": ""
         }
     ],
     "inventory": {

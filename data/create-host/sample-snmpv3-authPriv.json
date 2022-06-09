@@ -43,22 +43,26 @@
         {
             "macro": "{$AUTHPASS}",
             "value": "********",
-            "type": "secret"
+            "type": "secret",
+            "description": ""
         },
         {
             "macro": "{$CONTEXTNAME}",
             "value": "contextname",
-            "type": "text"
+            "type": "text",
+            "description": ""
         },
         {
             "macro": "{$PRIVPASS}",
             "value": "********",
-            "type": "secret"
+            "type": "secret",
+            "description": ""
         },
         {
             "macro": "{$SECURITYNAME}",
             "value": "securityname",
-            "type": "text"
+            "type": "text",
+            "description": ""
         }
     ],
     "inventory": {

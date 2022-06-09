@@ -57,7 +57,8 @@
         {
             "macro": "{$SNMP_COMMUNITY}",
             "value": "********",
-            "type": "secret"
+            "type": "secret",
+            "description": ""
         }
     ],
     "inventory": {
