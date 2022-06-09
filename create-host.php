@@ -1,5 +1,10 @@
 #!/usr/bin/php
 <?php
+///////////////////////////////////////////////////////////////////////////////////
+//	Name: create-host.php
+//	Description: Create a new host.
+///////////////////////////////////////////////////////////////////////////////////
+
 //Require
 require_once 'conf/config.php';
 require_once 'common_function.php';
@@ -891,7 +896,8 @@ for ($i = 0; $i < $count; ++$i) {
 	if (isset($data_array['macros'][0])) {
 		$count_macros = count($data_array['macros']);
 		for ($j = 0; $j < $count_macros; ++$j) {
-			if (isset($data_array['macros'][$j]['macro']) && isset($data_array['macros'][$j]['value']) && isset($data_array['macros'][$j]['type'])) {
+			if (isset($data_array['macros'][$j]['macro']) && isset($data_array['macros'][$j]['value']) 
+				&& isset($data_array['macros'][$j]['type']) && isset($data_array['macros'][$j]['description'])) {
 				if ($data_array['macros'][$j]['type'] === 'text') {
 					$macro_type = '0';
 				}
@@ -919,7 +925,8 @@ for ($i = 0; $i < $count; ++$i) {
 				$macros[] = array(
 					'macro' => $data_array['macros'][$j]['macro'],
 					'value' => $data_array['macros'][$j]['value'],
-					'type' => $macro_type
+					'type' => $macro_type,
+					'description' => $data_array['macros'][$j]['description']
 				);
 			}
 			else {
