@@ -1,0 +1,74 @@
+[
+    {
+        "hosts": [
+            "test1",
+            "test2"
+        ],
+        "groups": [],
+        "templates": [
+            "ICMP Ping",
+            "Generic SNMP"
+        ],
+        "macros": [
+            {
+                "macro": "{$SNMP_COMMUNITY}",
+                "value": "sample-community",
+                "type": "text",
+                "description": ""
+            }
+        ],
+        "interfaces": [
+            {
+                "type": "agent",
+                "main": "default",
+                "useip": "ip",
+                "ip": "127.0.0.1",
+                "dns": "",
+                "port": "10050",
+                "details": {
+                    "version": "",
+                    "bulk": "",
+                    "community": "",
+                    "contextname": "",
+                    "securityname": "",
+                    "securitylevel": "",
+                    "authprotocol": "",
+                    "authpassphrase": "",
+                    "privprotocol": "",
+                    "privpassphrase": ""
+                }
+            },
+            {
+                "type": "snmp",
+                "main": "default",
+                "useip": "ip",
+                "ip": "127.0.0.1",
+                "dns": "",
+                "port": "161",
+                "details": {
+                    "version": "2",
+                    "bulk": "on",
+                    "community": "{$SNMP_COMMUNITY}",
+                    "contextname": "",
+                    "securityname": "",
+                    "securitylevel": "",
+                    "authprotocol": "",
+                    "authpassphrase": "",
+                    "privprotocol": "",
+                    "privpassphrase": ""
+                }
+            }
+        ]
+    },
+    {
+        "hosts": [
+            "test3"
+        ],
+        "groups": [
+            "Discovered hosts"
+        ],
+        "templates": [],
+        "macros": [],
+        "interfaces": []
+    }
+]
