@@ -490,28 +490,32 @@ for ($i = 0; $i < $count; ++$i) {
 						$macros[] = array(
 							'macro' => $response['result'][$k]['macros'][$l]['macro'],
 							'value' => $response['result'][$k]['macros'][$l]['value'],
-							'type' => 'text'
+							'type' => 'text',
+							'description' => $response['result'][$k]['macros'][$l]['description']
 						);
 					}
 					elseif ($response['result'][$k]['macros'][$l]['type'] === '1') {
 						$macros[] = array(
 							'macro' => $response['result'][$k]['macros'][$l]['macro'],
 							'value' => '********',
-							'type' => 'secret'
+							'type' => 'secret',
+							'description' => $response['result'][$k]['macros'][$l]['description']
 						);
 					}
 					elseif ($response['result'][$k]['macros'][$l]['type'] === '2') {
 						$macros[] = array(
 							'macro' => $response['result'][$k]['macros'][$l]['macro'],
 							'value' => $response['result'][$k]['macros'][$l]['value'],
-							'type' => 'vault'
+							'type' => 'vault',
+							'description' => $response['result'][$k]['macros'][$l]['description']
 						);
 					}
 					else {
 						$macros[] = array(
 							'macro' => $response['result'][$k]['macros'][$l]['macro'],
 							'value' => $response['result'][$k]['macros'][$l]['value'],
-							'type' => $response['result'][$k]['macros'][$l]['type']
+							'type' => $response['result'][$k]['macros'][$l]['type'],
+							'description' => $response['result'][$k]['macros'][$l]['description']
 						);
 					}
 				}
