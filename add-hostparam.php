@@ -834,7 +834,7 @@ function get_hostid($host) {
 			'hostid'
 		),
 		'filter' => array(
-			'name' => $host
+			'host' => $host
 		)
 	);
 	$response = api_request($method, $params, $auth, '');
