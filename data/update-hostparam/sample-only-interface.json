@@ -1,0 +1,76 @@
+[
+    {
+        "host": "host1",
+        "property": {
+            "interfaces": [
+                {
+                    "type": "agent",
+                    "main": "default",
+                    "useip": "ip",
+                    "ip": "127.0.0.1",
+                    "dns": "",
+                    "port": "10050",
+                    "details": {
+                        "version": "",
+                        "bulk": "",
+                        "community": "",
+                        "contextname": "",
+                        "securityname": "",
+                        "securitylevel": "",
+                        "authprotocol": "",
+                        "authpassphrase": "",
+                        "privprotocol": "",
+                        "privpassphrase": ""
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "host": "host2",
+        "property": {
+            "interfaces": [
+                {
+                    "type": "agent",
+                    "main": "default",
+                    "useip": "ip",
+                    "ip": "127.0.0.1",
+                    "dns": "",
+                    "port": "10050",
+                    "details": {
+                        "version": "",
+                        "bulk": "",
+                        "community": "",
+                        "contextname": "",
+                        "securityname": "",
+                        "securitylevel": "",
+                        "authprotocol": "",
+                        "authpassphrase": "",
+                        "privprotocol": "",
+                        "privpassphrase": ""
+                    }
+                },
+                {
+                    "type": "snmp",
+                    "main": "default",
+                    "useip": "ip",
+                    "ip": "127.0.0.1",
+                    "dns": "",
+                    "port": "161",
+                    "details": {
+                        "version": "2",
+                        "bulk": "on",
+                        "community": "{$SNMP_COMMUNITY}",
+                        "contextname": "",
+                        "securityname": "",
+                        "securitylevel": "",
+                        "authprotocol": "",
+                        "authpassphrase": "",
+                        "privprotocol": "",
+                        "privpassphrase": ""
+                    }
+                }
+            ]
+        }
+    }
+]

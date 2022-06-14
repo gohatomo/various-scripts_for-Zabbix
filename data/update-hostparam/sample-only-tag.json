@@ -1,0 +1,17 @@
+[
+    {
+        "host": "host1",
+        "property": {
+            "tags": [
+                {
+                    "tag": "tag",
+                    "value": "test1"
+                },
+                {
+                    "tag": "tag2",
+                    "value": ""
+                }
+            ]
+        }
+    }
+]

@@ -1,0 +1,14 @@
+[
+    {
+        "host": "description-host",
+        "property": {
+            "description": "Change description"
+        }
+    },
+    {
+        "host": "description-host-line",
+        "property": {
+            "description": "Change description\nWith line breaks"
+        }
+    }
+]

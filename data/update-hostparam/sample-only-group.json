@@ -1,0 +1,19 @@
+[
+    {
+        "host": "host1",
+        "property": {
+            "groups": [
+                "Linux servers",
+                "Discovered hosts"
+            ]
+        }
+    },
+    {
+        "host": "host2",
+        "property": {
+            "groups": [
+                "Linux servers"
+            ]
+        }
+    }
+]

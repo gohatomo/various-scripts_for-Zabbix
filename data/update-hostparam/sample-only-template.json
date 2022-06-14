@@ -1,0 +1,19 @@
+[
+    {
+        "host": "host1",
+        "property": {
+            "templates": [
+                "ICMP Ping",
+                "Generic SNMP"
+            ]
+        }
+    },
+    {
+        "host": "host2",
+        "property": {
+            "templates": [
+                "ICMP Ping"
+            ]
+        }
+    }
+]

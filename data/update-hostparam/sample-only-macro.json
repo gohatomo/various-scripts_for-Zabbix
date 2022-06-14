@@ -1,0 +1,21 @@
+[
+    {
+        "host": "test1",
+        "property": {
+            "macros": [
+                {
+                    "macro": "{$MACRO1}",
+                    "value": "macro1",
+                    "type": "text",
+                    "description": ""
+                },
+                {
+                    "macro": "{$MACRO2}",
+                    "value": "macro2",
+                    "type": "secret",
+                    "description": "macro2"
+                }
+            ]
+        }
+    }
+]

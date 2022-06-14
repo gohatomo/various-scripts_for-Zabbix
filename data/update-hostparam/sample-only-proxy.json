@@ -1,0 +1,14 @@
+[
+    {
+        "host": "none-proxy",
+        "property": {
+            "proxy": "none"
+        }
+    },
+    {
+        "host": "sample-proxy",
+        "property": {
+            "proxy": "sample-proxy"
+        }
+    }
+]

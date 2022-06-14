@@ -1,0 +1,92 @@
+[
+    {
+        "host": "update-some-prop",
+        "property": {
+            "host": "",
+            "name": "",
+            "status": "enable",
+            "proxy": "none",
+            "description": "Change Description",
+            "templates": [
+                "ICMP Ping"
+            ],
+            "groups": [
+                "Linux servers",
+                "Discovered hosts"
+            ],
+            "interfaces": [
+                {
+                    "type": "agent",
+                    "main": "default",
+                    "useip": "ip",
+                    "ip": "127.0.0.1",
+                    "dns": "",
+                    "port": "10050",
+                    "details": {
+                        "version": "",
+                        "bulk": "",
+                        "community": "",
+                        "contextname": "",
+                        "securityname": "",
+                        "securitylevel": "",
+                        "authprotocol": "",
+                        "authpassphrase": "",
+                        "privprotocol": "",
+                        "privpassphrase": ""
+                    }
+                }
+            ],
+            "tags": [
+                {
+                    "tag": "tag",
+                    "value": "test1"
+                },
+                {
+                    "tag": "tag2",
+                    "value": ""
+                }
+            ],
+            "macros": [
+                {
+                    "macro": "{$MACRO1}",
+                    "value": "macro1",
+                    "type": "text",
+                    "description": ""
+                },
+                {
+                    "macro": "{$MACRO2}",
+                    "value": "macro2",
+                    "type": "secret",
+                    "description": "macro2"
+                }
+            ],
+            "inventory": {
+                "mode": "auto",
+                "inventory": [
+                    {
+                        "type": "alias",
+                        "value": "sample"
+                    },
+                    {
+                        "type": "os",
+                        "value": "linux"
+                    }
+                ]
+            },
+            "encryption": {
+                "tls_connect": "no",
+                "tls_accept": "no",
+                "tls_issuer": "",
+                "tls_subject": "",
+                "tls_psk_identity": "",
+                "tls_psk": ""
+            },
+            "ipmi": {
+                "authtype": "default",
+                "privilege": "user",
+                "username": "",
+                "password": ""
+            }
+        }
+    }
+]
