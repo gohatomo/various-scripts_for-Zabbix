@@ -1,0 +1,16 @@
+[
+    {
+        "host": "host1",
+        "property": {
+            "host": "host1-1",
+            "name": ""
+        }
+    },
+    {
+        "host": "host2",
+        "property": {
+            "host": "host2-2",
+            "name": "DisplayHost2-2"
+        }
+    }
+]

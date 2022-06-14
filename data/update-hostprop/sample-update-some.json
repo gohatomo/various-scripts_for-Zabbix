@@ -1,0 +1,39 @@
+[
+    {
+        "host": "update-some-prop",
+        "property": {
+            "host": "",
+            "name": "",
+            "description": "Change Description",
+            "proxy": "none",
+            "status": "enable",
+            "inventory": {
+                "mode": "auto",
+                "inventory": [
+                    {
+                        "type": "alias",
+                        "value": "sample"
+                    },
+                    {
+                        "type": "os",
+                        "value": "linux"
+                    }
+                ]
+            },
+            "encryption": {
+                "tls_connect": "no",
+                "tls_accept": "no",
+                "tls_issuer": "",
+                "tls_subject": "",
+                "tls_psk_identity": "",
+                "tls_psk": ""
+            },
+            "ipmi": {
+                "authtype": "default",
+                "privilege": "user",
+                "username": "",
+                "password": ""
+            }
+        }
+    }
+]

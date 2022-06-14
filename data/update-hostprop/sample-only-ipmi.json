@@ -1,0 +1,13 @@
+[
+    {
+        "host": "ipmi-host",
+        "property": {
+            "ipmi": {
+                "authtype": "none",
+                "privilege": "OEM",
+                "username": "username",
+                "password": "password"
+            }
+        }
+    }
+]
