@@ -55,7 +55,7 @@ $auth = api_login($api_user, $api_pass);
 //Display adjustment
 echo "\n";
 
-//Hostgroup create
+//Get host
 $count = count($file_list);
 $error_count = 0;
 for ($i = 0; $i < $count; ++$i) {
@@ -659,7 +659,7 @@ for ($i = 0; $i < $count; ++$i) {
 				$ipmi_password = $response['result'][$k]['ipmi_password'];
 
 				//File output
-				$output_file = $temp_dir . "/" . "{$host}_{$date}_{$time}.json";
+				$output_file = $temp_dir . "/" . "get-host_{$host}_{$date}_{$time}.json";
 				$output_array[] = $output_file;
 				$output_data = array(
 					'host' => $host,
