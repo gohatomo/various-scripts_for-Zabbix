@@ -83,7 +83,7 @@ for ($i = 0; $i < $count; ++$i) {
 		continue;
 	}
 	
-	//ID get
+	//Get ID
 	if (isset($data_array['groups'][0])) {
 		$count_groups = count($data_array['groups']);
 		for ($j = 0; $j < $count_groups; ++$j) {
