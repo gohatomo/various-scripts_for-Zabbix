@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 ///////////////////////////////////////////////////////////////////////////////////
-//	Name: get-id.php
+//	Name: get-id-withhost.php
 //	Description: Get ID for host, item and trigger in JSON format.
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -16,13 +16,13 @@ date_default_timezone_set("$timezone");
 $date = date("Ymd");
 $time = date("His");
 
-$log_file = rtrim($log_dir, '/') . "/get-id_{$date}.log";
+$log_file = rtrim($log_dir, '/') . "/get-id-withhost_{$date}.log";
 if (!file_exists($log_dir)) {
 	mkdir($log_dir, 0755);
 }
 
 //Datafile get
-$data_dir = rtrim($data_dir, '/') . "/get-id";
+$data_dir = rtrim($data_dir, '/') . "/get-id-withhost";
 
 foreach (glob("{$data_dir}/*.json") as $fname) {
 	if (!is_dir($fname)) {
@@ -42,7 +42,7 @@ if (!file_exists($output_dir)) {
 }
 
 //Temp directory settings
-$temp_dir = rtrim($output_dir, '/') . "/get-id_{$date}_{$time}";
+$temp_dir = rtrim($output_dir, '/') . "/get-id-withhost_{$date}_{$time}";
 
 if (!file_exists($temp_dir)) {
 	mkdir($temp_dir, 0755, TRUE);	
@@ -283,7 +283,7 @@ for ($i = 0; $i < $count; ++$i) {
 //File output
 foreach ($export_array as $key => $value) {
 	$output_host = $value['hosts']['host'];
-	$output_file = $temp_dir . "/" . "get-id_{$output_host}_{$date}_{$time}.json";
+	$output_file = $temp_dir . "/" . "get-id-withhost_{$output_host}_{$date}_{$time}.json";
 	$output_array[] = $output_file;
 	$output_json = json_encode($value, JSON_PRETTY_PRINT);
 
@@ -299,7 +299,7 @@ curl_close($ch);
 
 //Create zip file
 if (isset($output_array[0])) {
-	$z_file = "{$output_dir}/get-id_{$date}_{$time}.zip";
+	$z_file = "{$output_dir}/get-id-withhost_{$date}_{$time}.zip";
 
 	$zip = new ZipArchive();
 	$zip->open("{$z_file}", ZipArchive::CREATE);
