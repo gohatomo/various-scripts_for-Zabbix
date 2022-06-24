@@ -1,0 +1,21 @@
+{
+    "hosts": {
+        "enable": [],
+        "disable": []
+    },
+    "items": {
+            "enable": [
+                "44742",
+                "44743",
+                "44744"
+            ],
+            "disable": [
+                "44581",
+                "44582"
+            ]
+    },
+    "triggers": {
+            "enable": [],
+            "disable": []
+    }
+}
