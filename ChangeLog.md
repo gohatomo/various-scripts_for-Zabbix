@@ -17,3 +17,8 @@
 ### [z6/1.0.3] - 2022-06-14
 * Added script for host parameter update.
 * Changed the target host from display name to host name for host parameter add script.
+
+### [z6/1.0.4] - 2022-06-24
+* Added script to get ID of host, item and trigger.
+* Added script to update status of host, item and trigger.
+* Fixed an incorrect comment in the host get script and changed the output filename rule.
