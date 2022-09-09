@@ -22,3 +22,12 @@
 * Added script to get ID of host, item and trigger.
 * Added script to update status of host, item and trigger.
 * Fixed an incorrect comment in the host get script and changed the output filename rule.
+
+### [z6/1.0.5] - 2022-09-09
+* Fixed group variable duplication bug to host get script.
+* Changed to target only hosts to get ID of host, item and trigger. script.
+* Added valuemaps to host get script.
+* Added valuemaps to host create script.
+* Added script for template get.
+* Added script for ID of template, item and trigger.
+* Added script for template create.
