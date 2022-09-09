@@ -1,0 +1,12 @@
+{
+    "host": "sample-simple-template",
+    "name": "",
+    "description": "test\ntest2",
+    "templates": [],
+    "groups": [
+        "Discovered hosts"
+    ],
+    "tags": [],
+    "macros": [],
+    "valuemaps": []
+}
