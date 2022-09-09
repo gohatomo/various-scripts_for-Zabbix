@@ -179,9 +179,12 @@ for ($i = 0; $i < $count; ++$i) {
 					'value'
 				),
 				'selectInventory' => 'extend',
+				'selectValueMaps' => array(
+					'name',
+					'mappings'
+				)
 			);
 			$response = api_request($method, $params, $auth, '');
-			//print_r($response);
 			
 			if (isset($response['error'])) {
 				//Error count
@@ -253,10 +256,10 @@ for ($i = 0; $i < $count; ++$i) {
 				}
 
 				//groups
-				$groups = array();
-				$count_groups = count($response['result'][$k]['groups']);
-				for ($l = 0; $l < $count_groups; ++$l) {
-					$groups[] = $response['result'][$k]['groups'][$l]['name'];
+				$link_groups = array();
+				$count_link_groups = count($response['result'][$k]['groups']);
+				for ($l = 0; $l < $count_link_groups; ++$l) {
+					$link_groups[] = $response['result'][$k]['groups'][$l]['name'];
 				}
 
 				//interfaces
@@ -658,6 +661,44 @@ for ($i = 0; $i < $count; ++$i) {
 				//ipmi_password
 				$ipmi_password = $response['result'][$k]['ipmi_password'];
 
+				//valuemaps
+				$valuemaps = array();
+				$count_valuemaps = count($response['result'][$k]['valuemaps']);
+				for ($l = 0; $l < $count_valuemaps; ++$l) {
+					$mappings = array();
+					$valuemaps_name = $response['result'][$k]['valuemaps'][$l]['name'];
+					$count_mappings = count($response['result'][$k]['valuemaps'][$l]['mappings']);
+					for ($m = 0; $m < $count_mappings; ++$m) {
+						if ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '0') {
+							$valuemaps_type = '=';
+						}
+						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '1') {
+							$valuemaps_type = '>=';
+						}
+						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '2') {
+							$valuemaps_type = '<=';
+						}
+						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '3') {
+							$valuemaps_type = 'range';
+						}
+						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '4') {
+							$valuemaps_type = 'regexp';
+						}
+						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '5') {
+							$valuemaps_type = 'default';
+						}
+						$mappings[] = array(
+							'type' => $valuemaps_type,
+							'value' => $response['result'][$k]['valuemaps'][$l]['mappings'][$m]['value'],
+							'newvalue' => $response['result'][$k]['valuemaps'][$l]['mappings'][$m]['newvalue']
+						);
+					}
+					$valuemaps[] = array(
+						'name' => $valuemaps_name,
+						'mappings' => $mappings
+					);
+				}
+
 				//File output
 				$output_file = $temp_dir . "/" . "get-host_{$host}_{$date}_{$time}.json";
 				$output_array[] = $output_file;
@@ -668,7 +709,7 @@ for ($i = 0; $i < $count; ++$i) {
 					'proxy' => $proxy_name,
 					'description' => $description,
 					'templates' => $templates,
-					'groups' => $groups,
+					'groups' => $link_groups,
 					'interfaces' => $interfaces,
 					'tags' => $tags,
 					'macros' => $macros,
@@ -689,7 +730,8 @@ for ($i = 0; $i < $count; ++$i) {
 						'privilege' => $ipmi_privilege,
 						'username' => $ipmi_username,
 						'password' => $ipmi_password
-					)
+					),
+					'valuemaps' => $valuemaps
 				);
 				$output_json = json_encode($output_data, JSON_PRETTY_PRINT);
 				
