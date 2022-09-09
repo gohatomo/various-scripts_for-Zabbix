@@ -88,8 +88,6 @@ for ($i = 0; $i < $count; ++$i) {
 		$count_groups = count($data_array['groups']);
 		for ($j = 0; $j < $count_groups; ++$j) {
 
-			$interfaces = array();
-
 			//API Request
 			$method = 'hostgroup.get';
 			$params = array(
@@ -135,6 +133,38 @@ for ($i = 0; $i < $count; ++$i) {
 				continue;
 			}
 
+			//Host List get
+			$host_list = array();
+
+			//API Request
+			$method = 'host.get';
+			$params = array(
+				'groupids' => $groupid,
+				'output' => array(
+					'hostid',
+				)
+			);
+			$response = api_request($method, $params, $auth, '');
+			
+			if (isset($response['error'])) {
+				//Error count
+				$error_count = $error_count+1;
+				processing_status_display($i+1, $count, $error_count);
+				
+				//Error message output
+				$error_message = error_message($response);
+				log_output($log_file, $error_message);
+				
+				//Processing skip
+				continue;
+			}
+
+			$count_hosts = count($response['result']);
+			for ($k = 0; $k < $count_hosts; ++$k) {
+				$host_listid = $response['result'][$k]['hostid'];
+				$host_list[$host_listid] = $host_listid;
+			}
+
 			//API Request
 			$method = 'item.get';
 			$params = array(
@@ -176,6 +206,11 @@ for ($i = 0; $i < $count; ++$i) {
 			for ($k = 0; $k < $count_items; ++$k) {
 				//hostid
 				$hostid = $response['result'][$k]['hosts'][0]['hostid'];
+
+				//Exclude template hosts
+				if (!isset($host_list[$hostid])) {
+					continue;
+				}
 
 				//host
 				$host = $response['result'][$k]['hosts'][0]['host'];
