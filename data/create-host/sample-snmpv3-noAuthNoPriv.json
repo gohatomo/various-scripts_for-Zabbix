@@ -70,5 +70,6 @@
         "privilege": "user",
         "username": "",
         "password": ""
-    }
+    },
+    "valuemaps": []
 }

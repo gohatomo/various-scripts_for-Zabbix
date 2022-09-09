@@ -1091,7 +1091,7 @@ for ($i = 0; $i < $count; ++$i) {
 				log_output($log_file, $error_message);
 				
 				//Processing skip
-				continue ;
+				continue;
 			}
 			else {
 				$tls_psk_identity = $data_array['encryption']['tls_psk_identity'];
@@ -1111,7 +1111,7 @@ for ($i = 0; $i < $count; ++$i) {
 				log_output($log_file, $error_message);
 				
 				//Processing skip
-				continue ;
+				continue;
 			}
 			else {
 				$tls_issuer = $data_array['encryption']['tls_issuer'];
@@ -1204,6 +1204,73 @@ for ($i = 0; $i < $count; ++$i) {
 			$ipmi_username = $data_array['ipmi']['username'];
 		} 
 	}
+
+	//valuemaps
+	$valuemaps = array();
+
+	if (isset($data_array['valuemaps'][0])) {
+		$count_valuemaps = count($data_array['valuemaps']);
+		for ($j = 0; $j < $count_valuemaps; ++$j) {
+			$valuemaps_name = "";
+			
+			$valuemaps_name = $data_array['valuemaps'][$j]['name'];
+			$count_mappings = count($data_array['valuemaps'][$j]['mappings']);
+			for ($k = 0; $k < $count_mappings; ++$k) {
+				$mappings = array();
+				$mappings_type = "";
+				$mappings_value = "";
+				$mappings_newvalue = "";
+				
+				if ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === '=') {
+					$mappings_type = '0';
+				}
+				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === '>=') {
+					$mappings_type = '1';
+				}
+				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === '<=') {
+					$mappings_type = '2';
+				}
+				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === 'range') {
+					$mappings_type = '3';
+				}
+				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === 'regexp') {
+					$mappings_type = '4';
+				}
+				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === 'default') {
+					$mappings_type = '5';
+				}
+				else {
+					//Error count
+					$error_count = $error_count+1;
+					processing_status_display($i+1, $count, $error_count);
+					
+					//Error message output
+					$error_message = "[ERROR] "
+						. "message:\"" . "valuemaps mappings type is missmatched." . "\", "
+						. "file:\"" . $file_list[$i] . "\", "
+						. "data:\"" . $data_array['valuemaps'][$j]['mappings'][$k]['type'] . "\"";
+					log_output($log_file, $error_message);
+					
+					//Processing skip
+					continue 3;
+				}
+
+				$mappings_value = $data_array['valuemaps'][$j]['mappings'][$k]['value'];
+				$mappings_newvalue = $data_array['valuemaps'][$j]['mappings'][$k]['newvalue'];
+
+				$mappings[] = array(
+					'type' => $mappings_type,
+					'value' => $mappings_value,
+					'newvalue' => $mappings_newvalue
+				);
+			}
+			$valuemaps[] = array(
+				'name' => $valuemaps_name,
+				'mappings' => $mappings
+			);
+		}
+	}
+
 	//API Request
 	$method = 'host.create';
 	$params = array(
@@ -1235,7 +1302,6 @@ for ($i = 0; $i < $count; ++$i) {
 		);
 		$params = array_merge($params, $params_interfaces);
 	}
-
 	$response = api_request($method, $params, $auth, 'replace');
 	
 	if (isset($response['error'])) {
@@ -1249,6 +1315,36 @@ for ($i = 0; $i < $count; ++$i) {
 		
 		//Processing skip
 		continue;
+	}
+	else {
+		if (isset($valuemaps[0])) {
+			$create_hostid = $response['result']['hostids'][0];
+
+			$count_valuemaps = count($valuemaps);
+			for ($j = 0; $j < $count_valuemaps; ++$j) {
+				//API Request
+				$method = 'valuemap.create';
+				$params = array(
+					'hostid' => $create_hostid,
+					'name' => $valuemaps[$j]['name'],
+					'mappings' => $valuemaps[$j]['mappings']
+				);
+				$response = api_request($method, $params, $auth, 'replace');
+
+				if (isset($response['error'])) {
+					//Error count
+					$error_count = $error_count+1;
+					processing_status_display($i+1, $count, $error_count);
+					
+					//Error message output
+					$error_message = error_message($response);
+					log_output($log_file, $error_message);
+					
+					//Processing skip
+					continue;
+				}
+			}
+		}
 	}
 }
 

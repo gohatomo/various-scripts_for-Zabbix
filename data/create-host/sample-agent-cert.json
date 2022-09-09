@@ -84,5 +84,42 @@
         "privilege": "user",
         "username": "",
         "password": ""
-    }
+    },
+    "valuemaps": [
+        {
+            "name": "test",
+            "mappings": [
+                {
+                    "type": "=",
+                    "value": "99",
+                    "newvalue": "1"
+                },
+                {
+                    "type": ">=",
+                    "value": "100",
+                    "newvalue": "2"
+                },
+                {
+                    "type": "<=",
+                    "value": "98",
+                    "newvalue": "3"
+                },
+                {
+                    "type": "range",
+                    "value": "1-10",
+                    "newvalue": "4"
+                },
+                {
+                    "type": "regexp",
+                    "value": "regexp",
+                    "newvalue": "5"
+                },
+                {
+                    "type": "default",
+                    "value": "",
+                    "newvalue": "111"
+                }
+            ]
+        }
+    ]
 }
