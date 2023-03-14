@@ -8,6 +8,7 @@
 //Require
 require_once 'conf/config.php';
 require_once 'common_function.php';
+require_once 'zbx_define.php';
 
 //Setting timezone
 date_default_timezone_set("$timezone");
@@ -64,7 +65,7 @@ $error_count = 0;
 for ($i = 0; $i < $count; ++$i) {
 	//Processing status display
 	processing_status_display($i+1, $count, $error_count);
-	
+
 	//File data get
 	$data_json = file_get_contents("{$data_dir}/$file_list[$i]");
 	$data_array = json_decode($data_json, true);
@@ -72,13 +73,13 @@ for ($i = 0; $i < $count; ++$i) {
 		//Error count
 		$error_count = $error_count+1;
 		processing_status_display($i+1, $count, $error_count);
-		
+
 		//Error message output
 		$error_message = "[ERROR] "
 			. "message:\"" . "File is illegal json format." . "\", "
 			. "file:\"" . $file_list[$i] . "\"";
 		log_output($log_file, $error_message);
-		
+
 		//Processing skip
 		continue;
 	}
@@ -104,11 +105,11 @@ for ($i = 0; $i < $count; ++$i) {
 				//Error count
 				$error_count = $error_count+1;
 				processing_status_display($i+1, $count, $error_count);
-				
+
 				//Error message output
 				$error_message = error_message($response);
 				log_output($log_file, $error_message);
-				
+
 				//Processing skip
 				continue;
 			}
@@ -121,14 +122,14 @@ for ($i = 0; $i < $count; ++$i) {
 				//Error count
 				$error_count = $error_count+1;
 				processing_status_display($i+1, $count, $error_count);
-				
+
 				//Error message output
 				$error_message = "[ERROR] "
 					. "message:\"" . "hostgroup name is missmached." . "\", "
 					. "file:\"" . $file_list[$i] . "\", "
 					. "data:\"" . $data_array['groups'][$j] . "\"";
 				log_output($log_file, $error_message);
-				
+
 				//Processing skip
 				continue;
 			}
@@ -150,7 +151,7 @@ for ($i = 0; $i < $count; ++$i) {
 				//Error count
 				$error_count = $error_count+1;
 				processing_status_display($i+1, $count, $error_count);
-				
+
 				//Error message output
 				$error_message = error_message($response);
 				log_output($log_file, $error_message);
@@ -192,11 +193,11 @@ for ($i = 0; $i < $count; ++$i) {
 				//Error count
 				$error_count = $error_count+1;
 				processing_status_display($i+1, $count, $error_count);
-				
+
 				//Error message output
 				$error_message = error_message($response);
 				log_output($log_file, $error_message);
-				
+
 				//Processing skip
 				continue;
 			}
@@ -219,11 +220,8 @@ for ($i = 0; $i < $count; ++$i) {
 				$displayname = $response['result'][$k]['hosts'][0]['name'];
 
 				//hoststatus
-				if ($response['result'][$k]['hosts'][0]['status'] === '0') {
-					$hoststatus = 'enable';
-				}
-				elseif ($response['result'][$k]['hosts'][0]['status'] === '1') {
-					$hoststatus = 'disable';
+				if (isset(C_STATUS[$response['result'][$k]['hosts'][0]['status']])) {
+					$hoststatus = C_STATUS[$response['result'][$k]['hosts'][0]['status']];
 				}
 				else {
 					$hoststatus = $response['result'][$k]['hosts'][0]['status'];
@@ -246,11 +244,8 @@ for ($i = 0; $i < $count; ++$i) {
 				$itemname = $response['result'][$k]['name'];
 
 				//itemstatus
-				if ($response['result'][$k]['status'] === '0') {
-					$itemstatus = 'enable';
-				}
-				elseif ($response['result'][$k]['status'] === '1') {
-					$itemstatus = 'disable';
+				if (isset(C_STATUS[$response['result'][$k]['status']])) {
+					$itemstatus = C_STATUS[$response['result'][$k]['status']];
 				}
 				else {
 					$itemstatus = $response['result'][$k]['status'];
@@ -268,11 +263,8 @@ for ($i = 0; $i < $count; ++$i) {
 					$description = $response['result'][$k]['triggers'][$l]['description'];
 
 					//triggerstatus
-					if ($response['result'][$k]['triggers'][$l]['status'] === '0') {
-						$triggerstatus = 'enable';
-					}
-					elseif ($response['result'][$k]['triggers'][$l]['status'] === '1') {
-						$triggerstatus = 'disable';
+					if (isset(C_STATUS[$response['result'][$k]['triggers'][$l]['status']])) {
+						$triggerstatus = C_STATUS[$response['result'][$k]['triggers'][$l]['status']];
 					}
 					else {
 						$triggerstatus = $response['result'][$k]['triggers'][$l]['status'];

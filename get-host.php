@@ -8,6 +8,7 @@
 //Require
 require_once 'conf/config.php';
 require_once 'common_function.php';
+require_once 'zbx_define.php';
 
 //Setting timezone
 date_default_timezone_set("$timezone");
@@ -61,7 +62,7 @@ $error_count = 0;
 for ($i = 0; $i < $count; ++$i) {
 	//Processing status display
 	processing_status_display($i+1, $count, $error_count);
-	
+
 	//File data get
 	$data_json = file_get_contents("{$data_dir}/$file_list[$i]");
 	$data_array = json_decode($data_json, true);
@@ -69,17 +70,17 @@ for ($i = 0; $i < $count; ++$i) {
 		//Error count
 		$error_count = $error_count+1;
 		processing_status_display($i+1, $count, $error_count);
-		
+
 		//Error message output
 		$error_message = "[ERROR] "
 			. "message:\"" . "File is illegal json format." . "\", "
 			. "file:\"" . $file_list[$i] . "\"";
 		log_output($log_file, $error_message);
-		
+
 		//Processing skip
 		continue;
 	}
-	
+
 	//Host get
 	if (isset($data_array['groups'][0])) {
 		$count_groups = count($data_array['groups']);
@@ -103,7 +104,7 @@ for ($i = 0; $i < $count; ++$i) {
 				//Error count
 				$error_count = $error_count+1;
 				processing_status_display($i+1, $count, $error_count);
-				
+
 				//Error message output
 				$error_message = error_message($response);
 				log_output($log_file, $error_message);
@@ -120,14 +121,14 @@ for ($i = 0; $i < $count; ++$i) {
 				//Error count
 				$error_count = $error_count+1;
 				processing_status_display($i+1, $count, $error_count);
-				
+
 				//Error message output
 				$error_message = "[ERROR] "
 					. "message:\"" . "hostgroup name is missmached." . "\", "
 					. "file:\"" . $file_list[$i] . "\", "
 					. "data:\"" . $data_array['groups'][$j] . "\"";
 				log_output($log_file, $error_message);
-				
+
 				//Processing skip
 				continue;
 			}
@@ -185,16 +186,16 @@ for ($i = 0; $i < $count; ++$i) {
 				)
 			);
 			$response = api_request($method, $params, $auth, '');
-			
+
 			if (isset($response['error'])) {
 				//Error count
 				$error_count = $error_count+1;
 				processing_status_display($i+1, $count, $error_count);
-				
+
 				//Error message output
 				$error_message = error_message($response);
 				log_output($log_file, $error_message);
-				
+
 				//Processing skip
 				continue;
 			}
@@ -212,11 +213,8 @@ for ($i = 0; $i < $count; ++$i) {
 				$displayname = $response['result'][$k]['name'];
 
 				//status
-				if ($response['result'][$k]['status'] === '0') {
-					$status = 'enable';
-				}
-				elseif ($response['result'][$k]['status'] === '1') {
-					$status = 'disable';
+				if (isset(C_STATUS[$response['result'][$k]['status']])) {
+					$status = C_STATUS[$response['result'][$k]['status']];
 				}
 				else {
 					$status = $response['result'][$k]['status'];
@@ -235,7 +233,7 @@ for ($i = 0; $i < $count; ++$i) {
 						//Error count
 						$error_count = $error_count+1;
 						processing_status_display($i+1, $count, $error_count);
-						
+
 						//Error message output
 						$error_message = "[ERROR] "
 							. "message:\"" . "proxy name is missmatched." . "\", "
@@ -267,53 +265,38 @@ for ($i = 0; $i < $count; ++$i) {
 				$count_interfaces = count($response['result'][$k]['interfaces']);
 				for ($l = 0; $l < $count_interfaces; ++$l) {
 					//type
-					if ($response['result'][$k]['interfaces'][$l]['type'] === '1') {
-						$type = 'agent';
-					}
-					elseif ($response['result'][$k]['interfaces'][$l]['type'] === '2') {
-						$type = 'snmp';
-					}
-					elseif ($response['result'][$k]['interfaces'][$l]['type'] === '3') {
-						$type = 'ipmi';
-					}
-					elseif ($response['result'][$k]['interfaces'][$l]['type'] === '4') {
-						$type = 'jmx';
+					if (isset(INTERFACE_TYPE[$response['result'][$k]['interfaces'][$l]['type']])) {
+						$type = INTERFACE_TYPE[$response['result'][$k]['interfaces'][$l]['type']];
 					}
 					else {
 						$type = $response['result'][$k]['interfaces'][$l]['type'];
 					}
 					
 					//main
-					if ($response['result'][$k]['interfaces'][$l]['main'] === '1') {
-						$main = 'default';
-					}
-					elseif ($response['result'][$k]['interfaces'][$l]['main'] === '0') {
-						$main = 'not default';
+					if (isset(INTERFACE_MAIN[$response['result'][$k]['interfaces'][$l]['main']])) {
+						$main = INTERFACE_MAIN[$response['result'][$k]['interfaces'][$l]['main']];
 					}
 					else {
 						$main = $response['result'][$k]['interfaces'][$l]['main'];
 					}
 
 					//useip
-					if ($response['result'][$k]['interfaces'][$l]['main'] === '1') {
-						$useip = 'ip';
-					}
-					elseif ($response['result'][$k]['interfaces'][$l]['main'] === '0') {
-						$useip = 'dns';
+					if (isset(INTERFACE_USEIP[$response['result'][$k]['interfaces'][$l]['main']])) {
+						$useip = INTERFACE_USEIP[$response['result'][$k]['interfaces'][$l]['main']];
 					}
 					else {
 						$useip = $response['result'][$k]['interfaces'][$l]['useip'];
 					}
-					
+
 					//ip
 					$ip = $response['result'][$k]['interfaces'][$l]['ip'];
-					
+
 					//dns
 					$dns = $response['result'][$k]['interfaces'][$l]['dns'];
 
 					//port
 					$port = $response['result'][$k]['interfaces'][$l]['port'];
-					
+
 					//version
 					if ($response['result'][$k]['interfaces'][$l]['type'] === '2') {
 						$version = $response['result'][$k]['interfaces'][$l]['details']['version'];
@@ -324,11 +307,8 @@ for ($i = 0; $i < $count; ++$i) {
 
 					//bulk
 					if (isset($response['result'][$k]['interfaces'][$l]['details']['bulk'])) {
-						if ($response['result'][$k]['interfaces'][$l]['details']['bulk'] === '0') {
-							$bulk = 'off';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['bulk'] === '1') {
-							$bulk = 'on';
+						if (isset(INTERFACE_BULK[$response['result'][$k]['interfaces'][$l]['details']['bulk']])) {
+							$bulk = INTERFACE_BULK[$response['result'][$k]['interfaces'][$l]['details']['bulk']];
 						}
 						else {
 							$bulk = $response['result'][$k]['interfaces'][$l]['details']['bulk'];
@@ -364,14 +344,8 @@ for ($i = 0; $i < $count; ++$i) {
 
 					//securitylevel
 					if (isset($response['result'][$k]['interfaces'][$l]['details']['securitylevel'])) {
-						if ($response['result'][$k]['interfaces'][$l]['details']['securitylevel'] === '0') {
-							$securitylevel = 'noAuthNoPriv';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['securitylevel'] === '1') {
-							$securitylevel = 'authNoPriv';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['securitylevel'] === '2') {
-							$securitylevel = 'authPriv';
+						if (isset(C_SECURITY_LEVEL[$response['result'][$k]['interfaces'][$l]['details']['securitylevel']])) {
+							$securitylevel = C_SECURITY_LEVEL[$response['result'][$k]['interfaces'][$l]['details']['securitylevel']];
 						}
 						else {
 							$securitylevel = $response['result'][$k]['interfaces'][$l]['details']['securitylevel'];
@@ -383,23 +357,8 @@ for ($i = 0; $i < $count; ++$i) {
 
 					//authprotocol
 					if (isset($response['result'][$k]['interfaces'][$l]['details']['authprotocol'])) {
-						if ($response['result'][$k]['interfaces'][$l]['details']['authprotocol'] === '0') {
-							$authprotocol = 'MD5';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['authprotocol'] === '1') {
-							$authprotocol = 'SHA1';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['authprotocol'] === '2') {
-							$authprotocol = 'SHA224';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['authprotocol'] === '3') {
-							$authprotocol = 'SHA256';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['authprotocol'] === '4') {
-							$authprotocol = 'SHA384';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['authprotocol'] === '5') {
-							$authprotocol = 'SHA512';
+						if (isset(C_AUTHPROTOCOL[$response['result'][$k]['interfaces'][$l]['details']['authprotocol']])) {
+							$authprotocol = C_AUTHPROTOCOL[$response['result'][$k]['interfaces'][$l]['details']['authprotocol']];
 						}
 						else {
 							$authprotocol = $response['result'][$k]['interfaces'][$l]['details']['authprotocol'];
@@ -419,23 +378,8 @@ for ($i = 0; $i < $count; ++$i) {
 
 					//privprotocol
 					if (isset($response['result'][$k]['interfaces'][$l]['details']['privprotocol'])) {
-						if ($response['result'][$k]['interfaces'][$l]['details']['privprotocol'] === '0') {
-							$privprotocol = 'DES';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['privprotocol'] === '1') {
-							$privprotocol = 'AES128';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['privprotocol'] === '2') {
-							$privprotocol = 'AES192';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['privprotocol'] === '3') {
-							$privprotocol = 'AES256';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['privprotocol'] === '4') {
-							$privprotocol = 'AES192C';
-						}
-						elseif ($response['result'][$k]['interfaces'][$l]['details']['privprotocol'] === '5') {
-							$privprotocol = 'AES256C';
+						if (isset(C_PRIVPROTOCOL[$response['result'][$k]['interfaces'][$l]['details']['privprotocol']])) {
+							$privprotocol = C_PRIVPROTOCOL[$response['result'][$k]['interfaces'][$l]['details']['privprotocol']];
 						}
 						else {
 							$privprotocol = $response['result'][$k]['interfaces'][$l]['details']['privprotocol'];
@@ -524,14 +468,8 @@ for ($i = 0; $i < $count; ++$i) {
 				}
 
 				//inventory_mode
-				if ($response['result'][$k]['inventory_mode'] === '-1') {
-					$inventory_mode = 'disable';
-				}
-				elseif ($response['result'][$k]['inventory_mode'] === '0') {
-					$inventory_mode = 'manual';
-				}
-				elseif ($response['result'][$k]['inventory_mode'] === '1') {
-					$inventory_mode = 'auto';
+				if (isset(INVENTORY_MODE[$response['result'][$k]['inventory_mode']])) {
+					$inventory_mode = INVENTORY_MODE[$response['result'][$k]['inventory_mode']];
 				}
 				else {
 					$inventory_mode = $response['result'][$k]['inventory_mode'];
@@ -554,54 +492,28 @@ for ($i = 0; $i < $count; ++$i) {
 				$tls_psk_identity = "";
 				$tls_psk = "";
 
-				if ($response['result'][$k]['tls_connect'] === '1') {
-					$tls_connect = 'no';
-				}
-				elseif ($response['result'][$k]['tls_connect'] === '2') {
-					$tls_connect = 'psk';
-					$tls_psk_identity = 'write only';
-					$tls_psk = 'write only';
-				}
-				elseif ($response['result'][$k]['tls_connect'] === '4') {
-					$tls_connect = 'certificate';
+				if (isset(C_TLC_CONNECT[$response['result'][$k]['tls_connect']])) {
+					$tls_connect = C_TLC_CONNECT[$response['result'][$k]['tls_connect']];
 				}
 				else {
 					$tls_connect = $response['result'][$k]['tls_connect'];
 				}
 
 				//tls_accept
-				if ($response['result'][$k]['tls_accept'] === '1') {
-					$tls_accept = 'no';
-				}
-				elseif ($response['result'][$k]['tls_accept'] === '2') {
-					$tls_accept = 'psk';
-					$tls_psk_identity = 'write only';
-					$tls_psk = 'write only';
-				}
-				elseif ($response['result'][$k]['tls_accept'] === '3') {
-					$tls_accept = 'no,psk';
-					$tls_psk_identity = 'write only';
-					$tls_psk = 'write only';
-				}
-				elseif ($response['result'][$k]['tls_accept'] === '4') {
-					$tls_accept = 'certificate';
-				}
-				elseif ($response['result'][$k]['tls_accept'] === '5') {
-					$tls_accept = 'no,certificate';
-				}
-				elseif ($response['result'][$k]['tls_accept'] === '6') {
-					$tls_accept = 'psk,certificate';
-					$tls_psk_identity = 'write only';
-					$tls_psk = 'write only';
-				}
-				elseif ($response['result'][$k]['tls_accept'] === '7') {
-					$tls_accept = 'no,psk,certificate';
-					$tls_psk_identity = 'write only';
-					$tls_psk = 'write only';
+				if (isset(C_TLC_ACCEPT[$response['result'][$k]['tls_accept']])) {
+					$tls_accept = C_TLC_ACCEPT[$response['result'][$k]['tls_accept']];
 				}
 				else {
 					$tls_accept = $response['result'][$k]['tls_accept'];
 				}
+
+				if ($response['result'][$k]['tls_accept'] === '2'
+				 || $response['result'][$k]['tls_accept'] === '3'
+				 || $response['result'][$k]['tls_accept'] === '6'
+				 || $response['result'][$k]['tls_accept'] === '7') {
+					$tls_psk_identity = 'write only';
+					$tls_psk = 'write only';
+				 }
 				
 				//tls_issuer
 				$tls_issuer = $response['result'][$k]['tls_issuer'];
@@ -610,46 +522,16 @@ for ($i = 0; $i < $count; ++$i) {
 				$tls_subject = $response['result'][$k]['tls_subject'];
 
 				//ipmi_authtype
-				if ($response['result'][$k]['ipmi_authtype'] === '-1') {
-					$ipmi_authtype = 'default';
-				}
-				elseif ($response['result'][$k]['ipmi_authtype'] === '0') {
-					$ipmi_authtype = "none";
-				}
-				elseif ($response['result'][$k]['ipmi_authtype'] === '1') {
-					$ipmi_authtype = "MD2";
-				}
-				elseif ($response['result'][$k]['ipmi_authtype'] === '2') {
-					$ipmi_authtype = "MD5";
-				}
-				elseif ($response['result'][$k]['ipmi_authtype'] === '4') {
-					$ipmi_authtype = "straight";
-				}
-				elseif ($response['result'][$k]['ipmi_authtype'] === '5') {
-					$ipmi_authtype = "OEM";
-				}
-				elseif ($response['result'][$k]['ipmi_authtype'] === '6') {
-					$ipmi_authtype = "RMCP";
+				if (isset(IPMI_AUTHTYPE[$response['result'][$k]['ipmi_authtype']])) {
+					$ipmi_authtype = IPMI_AUTHTYPE[$response['result'][$k]['ipmi_authtype']];
 				}
 				else {
 					$ipmi_authtype = $response['result'][$k]['ipmi_authtype'];
 				}
 
 				//ipmi_privilege
-				if ($response['result'][$k]['ipmi_privilege'] === '1') {
-					$ipmi_privilege = 'callback';
-				}
-				elseif ($response['result'][$k]['ipmi_privilege'] === '2') {
-					$ipmi_privilege = "user";
-				}
-				elseif ($response['result'][$k]['ipmi_privilege'] === '3') {
-					$ipmi_privilege = "operator";
-				}
-				elseif ($response['result'][$k]['ipmi_privilege'] === '4') {
-					$ipmi_privilege = "admin";
-				}
-				elseif ($response['result'][$k]['ipmi_privilege'] === '5') {
-					$ipmi_privilege = "OEM";
+				if (isset(IPMI_PRIVILEGE[$response['result'][$k]['ipmi_privilege']])) {
+					$ipmi_privilege = IPMI_PRIVILEGE[$response['result'][$k]['ipmi_privilege']];
 				}
 				else {
 					$ipmi_privilege = $response['result'][$k]['ipmi_privilege'];
@@ -669,23 +551,11 @@ for ($i = 0; $i < $count; ++$i) {
 					$valuemaps_name = $response['result'][$k]['valuemaps'][$l]['name'];
 					$count_mappings = count($response['result'][$k]['valuemaps'][$l]['mappings']);
 					for ($m = 0; $m < $count_mappings; ++$m) {
-						if ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '0') {
-							$valuemaps_type = '=';
+						if (isset(VALUEMAPS_TYPE[$response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type']])) {
+							$valuemaps_type = VALUEMAPS_TYPE[$response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type']];
 						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '1') {
-							$valuemaps_type = '>=';
-						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '2') {
-							$valuemaps_type = '<=';
-						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '3') {
-							$valuemaps_type = 'range';
-						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '4') {
-							$valuemaps_type = 'regexp';
-						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '5') {
-							$valuemaps_type = 'default';
+						else {
+							$valuemaps_type = $response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'];
 						}
 						$mappings[] = array(
 							'type' => $valuemaps_type,
@@ -743,7 +613,7 @@ for ($i = 0; $i < $count; ++$i) {
 		//Error count
 		$error_count = $error_count+1;
 		processing_status_display($i+1, $count, $error_count);
-		
+
 		//Error message output
 		$error_message = "[ERROR] "
 			. "message:\"" . "groups is not set." . "\", "
@@ -784,7 +654,7 @@ else {
 	//Error count
 	$error_count = $error_count+1;
 	processing_status_display($i+1, $count, $error_count);
-	
+
 	//Error message output
 	$error_message = "[ERROR] "
 		. "message:\"" . "No output file. Check data file and Zabbix." . "\"";
@@ -802,7 +672,7 @@ rm_dir($temp_dir);
 function get_proxyname($proxy_hostid) {
 	global $auth;
 	global $f;
-	
+
 	$method = 'proxy.get';
 	$params = array(
 		'proxyids' => $proxy_hostid,
@@ -811,7 +681,7 @@ function get_proxyname($proxy_hostid) {
 		)
 	);
 	$response = api_request($method, $params, $auth, '');
-	
+
 	if (isset($response['result'])) {
 		if (isset($response['result'][0]['host'])) {
 			return $response['result'][0]['host'];

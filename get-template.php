@@ -8,6 +8,7 @@
 //Require
 require_once 'conf/config.php';
 require_once 'common_function.php';
+require_once 'zbx_define.php';
 
 //Setting timezone
 date_default_timezone_set("$timezone");
@@ -262,23 +263,11 @@ for ($i = 0; $i < $count; ++$i) {
 					$valuemaps_name = $response['result'][$k]['valuemaps'][$l]['name'];
 					$count_mappings = count($response['result'][$k]['valuemaps'][$l]['mappings']);
 					for ($m = 0; $m < $count_mappings; ++$m) {
-						if ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '0') {
-							$valuemaps_type = '=';
+						if (isset(VALUEMAPS_TYPE[$response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type']])) {
+							$valuemaps_type = VALUEMAPS_TYPE[$response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type']];
 						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '1') {
-							$valuemaps_type = '>=';
-						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '2') {
-							$valuemaps_type = '<=';
-						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '3') {
-							$valuemaps_type = 'range';
-						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '4') {
-							$valuemaps_type = 'regexp';
-						}
-						elseif ($response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'] === '5') {
-							$valuemaps_type = 'default';
+						else {
+							$valuemaps_type = $response['result'][$k]['valuemaps'][$l]['mappings'][$m]['type'];
 						}
 						$mappings[] = array(
 							'type' => $valuemaps_type,
