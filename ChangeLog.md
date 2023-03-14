@@ -31,3 +31,10 @@
 * Added script for template get.
 * Added script for ID of template, item and trigger.
 * Added script for template create.
+
+### [z6/1.0.6] - 2023-03-14
+* Changed Title because change repository name.
+* Added script for item get.
+* Added script for trigger get.
+* Changed value conversion to use constants.
+
