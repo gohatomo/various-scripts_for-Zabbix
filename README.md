@@ -1,4 +1,4 @@
-# zbx-scripts
+# various-scripts for Zabbix
 
 ## Description
 Various scripts using Zabbix API. Please use Zabbix for convenient use.
