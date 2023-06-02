@@ -130,16 +130,16 @@ define('INTERFACE_TYPE',
 //interface_main
 define('INTERFACE_MAIN',
 	array(
-		'0' => 'default',
-		'1' => 'not default'
+		'0' => 'not default',
+		'1' => 'default'
 	)
 );
 
 //interface_useip
 define('INTERFACE_USEIP',
 	array(
-		'0' => 'ip',
-		'1' => 'dns'
+		'0' => 'dns',
+		'1' => 'ip'
 	)
 );
 
@@ -428,6 +428,15 @@ define('MANUAL_CLOSE',
 	array(
 		'0' => 'Do not allow',
 		'1' => 'Allow'
+	)
+);
+
+//macro_type
+define('MACRO_TYPE',
+	array(
+		'0' => 'text',
+		'1' => 'secret',
+		'2' => 'vault'
 	)
 );
 
