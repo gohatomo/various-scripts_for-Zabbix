@@ -8,6 +8,7 @@
 //Require
 require_once 'conf/config.php';
 require_once 'common_function.php';
+require_once 'zbx_define.php';
 
 //Setting timezone
 date_default_timezone_set("$timezone");
@@ -258,16 +259,10 @@ for ($i = 0; $i < $count; ++$i) {
 		for ($j = 0; $j < $count_macros; ++$j) {
 			if (isset($data_array['macros'][$j]['macro']) && isset($data_array['macros'][$j]['value']) 
 				&& isset($data_array['macros'][$j]['type']) && isset($data_array['macros'][$j]['description'])) {
-				if ($data_array['macros'][$j]['type'] === 'text') {
-					$macro_type = '0';
-				}
-				elseif ($data_array['macros'][$j]['type'] === 'secret') {
-					$macro_type = '1';
-				}
-				elseif ($data_array['macros'][$j]['type'] === 'valut') {
-					$macro_type = '2';
-				}
-				else {
+				
+				$macro_type = array_search($data_array['macros'][$j]['type'], MACRO_TYPE);
+
+				if (is_null($macro_type)) {
 					//Error count
 					$error_count = $error_count+1;
 					processing_status_display($i+1, $count, $error_count);
@@ -322,25 +317,9 @@ for ($i = 0; $i < $count; ++$i) {
 				$mappings_value = "";
 				$mappings_newvalue = "";
 
-				if ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === '=') {
-					$mappings_type = '0';
-				}
-				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === '>=') {
-					$mappings_type = '1';
-				}
-				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === '<=') {
-					$mappings_type = '2';
-				}
-				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === 'range') {
-					$mappings_type = '3';
-				}
-				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === 'regexp') {
-					$mappings_type = '4';
-				}
-				elseif ($data_array['valuemaps'][$j]['mappings'][$k]['type'] === 'default') {
-					$mappings_type = '5';
-				}
-				else {
+				$mappings_type = array_search($data_array['valuemaps'][$j]['mappings'][$k]['type'], VALUEMAPS_TYPE);
+
+				if (is_null($mappings_type)) {
 					//Error count
 					$error_count = $error_count+1;
 					processing_status_display($i+1, $count, $error_count);

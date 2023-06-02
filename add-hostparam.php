@@ -8,6 +8,7 @@
 //Require
 require_once 'conf/config.php';
 require_once 'common_function.php';
+require_once 'zbx_define.php';
 
 //Setting timezone
 date_default_timezone_set("$timezone");
@@ -165,17 +166,9 @@ for ($i = 0; $i < $count; ++$i) {
 					
 					//macro type
 					$macro_type = "";
-
-					if ($data_array[$j]['macros'][$k]['type'] === 'text') {
-						$macro_type = '0';
-					}
-					elseif ($data_array[$j]['macros'][$k]['type'] === 'secret') {
-						$macro_type = '1';
-					}
-					elseif ($data_array[$j]['macros'][$k]['type'] === 'vault') {
-						$macro_type = '2';
-					}
-					else {
+					
+					$macro_type = array_search($data_array[$j]['macros'][$k]['type'], MACRO_TYPE);
+					if (is_null($macro_type)) {
 						//Error count
 						$error_count = $error_count+1;
 						processing_status_display($i+1, $count, $error_count);
@@ -240,19 +233,9 @@ for ($i = 0; $i < $count; ++$i) {
 			for ($k = 0; $k < $count_interfaces; ++$k) {
 				//type
 				if (isset($data_array[$j]['interfaces'][$k]['type'])) {
-					if ($data_array[$j]['interfaces'][$k]['type'] === 'agent') {
-						$type = '1';
-					}
-					elseif ($data_array[$j]['interfaces'][$k]['type'] === 'snmp') {
-						$type = '2';
-					}
-					elseif ($data_array[$j]['interfaces'][$k]['type'] === 'ipmi') {
-						$type = '3';
-					}
-					elseif ($data_array[$j]['interfaces'][$k]['type'] === 'jmx') {
-						$type = '4';
-					}
-					else {
+					$type = array_search($data_array[$j]['interfaces'][$k]['type'], INTERFACE_TYPE);
+
+					if (is_null($type)) {
 						//Error count
 						$error_count = $error_count+1;
 						processing_status_display($i+1, $count, $error_count);
@@ -285,11 +268,22 @@ for ($i = 0; $i < $count; ++$i) {
 				
 				//main
 				if (isset($data_array[$j]['interfaces'][$k]['main'])) {
-					if ($data_array[$j]['interfaces'][$k]['main'] === 'default') {
-						$main = '1';
-					}
-					else {
-						$main = '0';
+					$main = array_search($data_array[$j]['interfaces'][$k]['main'], INTERFACE_MAIN);
+
+					if (is_null($main)) {
+						//Error count
+						$error_count = $error_count+1;
+						processing_status_display($i+1, $count, $error_count);
+						
+						//Error message output
+						$error_message = "[ERROR] "
+							. "message:\"" . "interfaces main is missmatched." . "\", "
+							. "file:\"" . $file_list[$i] . "\", "
+							. "data:\"" . $data_array[$j]['interfaces'][$k]['main'] . "\"";
+						log_output($log_file, $error_message);
+						
+						//Processing skip
+						continue 2;
 					}
 				}
 				else {
@@ -309,13 +303,9 @@ for ($i = 0; $i < $count; ++$i) {
 				
 				//useip
 				if (isset($data_array[$j]['interfaces'][$k]['useip'])) {
-					if ($data_array[$j]['interfaces'][$k]['useip'] === 'ip') {
-						$useip = '1';
-					}
-					elseif ($data_array[$j]['interfaces'][$k]['useip'] === 'dns') {
-						$useip = '0';
-					}
-					else {
+					$useip = array_search($data_array[$j]['interfaces'][$k]['useip'], INTERFACE_USEIP);
+					
+					if (is_null($useip)) {
 						//Error count
 						$error_count = $error_count+1;
 						processing_status_display($i+1, $count, $error_count);
@@ -349,7 +339,7 @@ for ($i = 0; $i < $count; ++$i) {
 				//ip
 				if (isset($data_array[$j]['interfaces'][$k]['ip'])) {
 					if (empty($data_array[$j]['interfaces'][$k]['ip'])) {
-						if ($useip === '0') {
+						if ($useip == '0') {
 							$ip = $data_array[$j]['interfaces'][$k]['ip'];
 						}
 						else {
@@ -389,7 +379,7 @@ for ($i = 0; $i < $count; ++$i) {
 				//dns
 				if (isset($data_array[$j]['interfaces'][$k]['dns'])) {
 					if (empty($data_array[$j]['interfaces'][$k]['dns'])) {
-						if ($useip === '1') {
+						if ($useip == '1') {
 							$dns = $data_array[$j]['interfaces'][$k]['dns'];
 						}
 						else {
@@ -447,13 +437,13 @@ for ($i = 0; $i < $count; ++$i) {
 				}
 				
 				//details
-				if ($type === '2') {
+				if ($type == '2') {
 					if (isset($data_array[$j]['interfaces'][$k]['details'])) {
 						//version
 						if (isset($data_array[$j]['interfaces'][$k]['details']['version'])) {
-							if ($data_array[$j]['interfaces'][$k]['details']['version'] === '1' ||
-								$data_array[$j]['interfaces'][$k]['details']['version'] === '2' ||
-								$data_array[$j]['interfaces'][$k]['details']['version'] === '3') {
+							if ($data_array[$j]['interfaces'][$k]['details']['version'] == '1' ||
+								$data_array[$j]['interfaces'][$k]['details']['version'] == '2' ||
+								$data_array[$j]['interfaces'][$k]['details']['version'] == '3') {
 								
 								$version = $data_array[$j]['interfaces'][$k]['details']['version'];
 							}
@@ -490,13 +480,9 @@ for ($i = 0; $i < $count; ++$i) {
 						
 						//bulk
 						if (isset($data_array[$j]['interfaces'][$k]['details']['bulk'])) {
-							if ($data_array[$j]['interfaces'][$k]['details']['bulk'] === 'on') {
-								$bulk = '1';
-							}
-							elseif ($data_array[$j]['interfaces'][$k]['details']['bulk'] === 'off') {
-								$bulk = '0';
-							}
-							else {
+							$bulk = array_search($data_array[$j]['interfaces'][$k]['details']['bulk'], INTERFACE_BULK);
+
+							if (is_null($bulk)) {
 								//Error count
 								$error_count = $error_count+1;
 								processing_status_display($i+1, $count, $error_count);
@@ -517,7 +503,7 @@ for ($i = 0; $i < $count; ++$i) {
 						}
 						
 						//Settings for each version
-						if ($version === '1' || $version === '2') {
+						if ($version == '1' || $version == '2') {
 							//community
 							if (isset($data_array[$j]['interfaces'][$k]['details']['community'])) {
 								if (!empty($data_array[$j]['interfaces'][$k]['details']['community'])) {
@@ -554,7 +540,7 @@ for ($i = 0; $i < $count; ++$i) {
 								continue 2;
 							}
 						}
-						if ($version === '3') {
+						if ($version == '3') {
 							//contextname
 							if (isset($data_array[$j]['interfaces'][$k]['details']['contextname'])) {
 								$contextname = $data_array[$j]['interfaces'][$k]['details']['contextname'];
@@ -595,16 +581,9 @@ for ($i = 0; $i < $count; ++$i) {
 							
 							//securitylevel
 							if (isset($data_array[$j]['interfaces'][$k]['details']['securitylevel'])) {
-								if ($data_array[$j]['interfaces'][$k]['details']['securitylevel'] === 'noAuthNoPriv') {
-									$securitylevel = '0';
-								}
-								elseif ($data_array[$j]['interfaces'][$k]['details']['securitylevel'] === 'authNoPriv') {
-									$securitylevel = '1';
-								}
-								elseif ($data_array[$j]['interfaces'][$k]['details']['securitylevel'] === 'authPriv') {
-									$securitylevel = '2';
-								}
-								else {
+								$securitylevel = array_search($data_array[$j]['interfaces'][$k]['details']['securitylevel'], C_SECURITY_LEVEL);
+
+								if (is_null($securitylevel)) {
 									//Error count
 									$error_count = $error_count+1;
 									processing_status_display($i+1, $count, $error_count);
@@ -635,26 +614,25 @@ for ($i = 0; $i < $count; ++$i) {
 								continue 2;
 							}
 							
-							if ($securitylevel === '1' || $securitylevel === '2') {
+							if ($securitylevel == '1' || $securitylevel == '2') {
 								//authprotocol
 								if (isset($data_array[$j]['interfaces'][$k]['details']['authprotocol'])) {
-									if ($data_array[$j]['interfaces'][$k]['details']['authprotocol'] === 'MD5') {
-										$authprotocol = '0';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['authprotocol'] === 'SHA1') {
-										$authprotocol = '1';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['authprotocol'] === 'SHA224') {
-										$authprotocol = '2';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['authprotocol'] === 'SHA256') {
-										$authprotocol = '3';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['authprotocol'] === 'SHA384') {
-										$authprotocol = '4';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['authprotocol'] === 'SHA512') {
-										$authprotocol = '5';
+									$authprotocol = array_search($data_array[$j]['interfaces'][$k]['details']['authprotocol'], C_AUTHPROTOCOL);
+
+									if (is_null($authprotocol)) {
+										//Error count
+										$error_count = $error_count+1;
+										processing_status_display($i+1, $count, $error_count);
+										
+										//Error message output
+										$error_message = "[ERROR] "
+											. "message:\"" . "interfaces snmp authprotocol is missmatched." . "\", "
+											. "file:\"" . $file_list[$i] . "\", "
+											. "data:\"" . $data_array[$j]['interfaces'][$k]['details']['authprotocol'] . "\"";
+										log_output($log_file, $error_message);
+										
+										//Processing skip
+										continue 2;
 									}
 								}
 								else {
@@ -691,26 +669,25 @@ for ($i = 0; $i < $count; ++$i) {
 									continue 2;
 								}
 							}
-							if ($securitylevel === '2') {
+							if ($securitylevel == '2') {
 								//privprotocol
 								if (isset($data_array[$j]['interfaces'][$k]['details']['privprotocol'])) {
-									if ($data_array[$j]['interfaces'][$k]['details']['privprotocol'] === 'DES') {
-										$privprotocol = '0';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['privprotocol'] === 'AES128') {
-										$privprotocol = '1';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['privprotocol'] === 'AES192') {
-										$privprotocol = '2';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['privprotocol'] === 'AES256') {
-										$privprotocol = '3';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['privprotocol'] === 'AES192C') {
-										$privprotocol = '4';
-									}
-									elseif ($data_array[$j]['interfaces'][$k]['details']['privprotocol'] === 'AES256C') {
-										$privprotocol = '5';
+									$privprotocol = array_search($data_array[$j]['interfaces'][$k]['details']['privprotocol'], C_PRIVPROTOCOL);
+
+									if (is_null($privprotocol)) {
+										//Error count
+										$error_count = $error_count+1;
+										processing_status_display($i+1, $count, $error_count);
+										
+										//Error message output
+										$error_message = "[ERROR] "
+											. "message:\"" . "interfaces snmp privprotocol is missmatched." . "\", "
+											. "file:\"" . $file_list[$i] . "\", "
+											. "data:\"" . $data_array[$j]['interfaces'][$k]['details']['privprotocol'] . "\"";
+										log_output($log_file, $error_message);
+										
+										//Processing skip
+										continue 2;
 									}
 								}
 								else {
