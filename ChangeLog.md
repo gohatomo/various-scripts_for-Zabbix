@@ -34,7 +34,11 @@
 
 ### [z6/1.0.6] - 2023-03-14
 * Changed Title because change repository name.
-* Added script for item get.
-* Added script for trigger get.
-* Changed value conversion to use constants.
+* Added script for item get of host.
+* Added script for trigger get of host.
+* Changed value conversion to use constants to scripts of get.
 
+### [z6/1.0.7] - 2023-06-02
+* Added script for item get of template.
+* Added script for trigger get of template.
+* Changed value conversions to use constants for value conversions other than scripts of get.
